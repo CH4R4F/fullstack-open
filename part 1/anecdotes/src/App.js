@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MostVoted } from "./components/MostVoted";
 
 const App = () => {
   const anecdotes = [
@@ -24,6 +25,7 @@ const App = () => {
     copy[selected] += 1;
     setVotes(copy);
   }
+
   return (
     <>
       <div>
@@ -32,6 +34,7 @@ const App = () => {
       </div>
       <button onClick={handleVotes}>vote</button>
       <button onClick={next}>next anecdote</button>
+      <MostVoted anecdotes={anecdotes} votes={votes} />
     </>
   );
 };
