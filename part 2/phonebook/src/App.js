@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { AddForm } from "./components/AddForm";
+import { Contacts } from "./components/Contacts";
+import { Filter } from "./components/Filter";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,7 +12,7 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [filtered, setFiltred] = useState(persons)
+  const [filtered, setFiltred] = useState("");
 
   function addPerson(e) {
     e.preventDefault();
@@ -24,43 +27,27 @@ const App = () => {
     const personName = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
+      id: persons.length + 1,
     };
     setPersons(persons.concat(personName));
     setNewName("");
     setNewNumber("");
   }
 
-  function filterPhones(e) {
-    let keyword = e.target.value
-    setFiltred(persons.filter(person => person.name.toLowerCase().includes(keyword.toLowerCase())))
-  }
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with: <input onChange={filterPhones} />
-      </div>
-      <form onSubmit={addPerson}>
-        <h1>Add New</h1>
-        <div>
-          name: <input value={newName} onChange={(e) => setNewName(e.target.value)} />
-        </div>
-        <div>
-          number:{" "}
-          <input type="number" value={newNumber} onChange={(e) => setNewNumber(e.target.value)} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter setFiltred={setFiltred} />
+      <h1>Add New</h1>
+      <AddForm
+        addPerson={addPerson}
+        newName={newName}
+        newNumber={newNumber}
+        setNewName={setNewName}
+        setNewNumber={setNewNumber}
+      />
       <h2>Numbers</h2>
-      {filtered.map((person) => (
-        <p key={person.id}>
-          {person.name} {person.number}
-        </p>
-      ))}
+      <Contacts persons={persons} filtered={filtered} />
     </div>
   );
 };
