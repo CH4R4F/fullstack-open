@@ -6,6 +6,7 @@ import Counties from "./components/Counties";
 function App() {
   const [search, setSearch] = useState("");
   const [countries, setCountries] = useState([]);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     axios.get(`https://restcountries.com/v3.1/name/${search}`).then((response) => {
@@ -15,8 +16,8 @@ function App() {
 
   return (
     <div>
-      <Search search={search} setSearch={setSearch} />
-      {search && <Counties countries={countries} />}
+      <Search search={search} setSearch={setSearch} setShow={setShow} />
+      {search && <Counties countries={countries} show={show} setShow={setShow} />}
       {!search && <p>Search for a country</p>}
     </div>
   );
