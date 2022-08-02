@@ -1,0 +1,11 @@
+.notification {
+  padding: 10px;
+}
+.notification.success {
+  background-color: #dff0d8;
+  border: 2px solid #6cff6f;
+}
+.notification.error {
+  background-color: #f2dede;
+  border: 2px solid #ff6c6c;
+}

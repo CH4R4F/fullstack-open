@@ -1,13 +1,21 @@
 import contactCrud from "../services/contactCrud";
 
-export const Contacts = ({ persons, setPersons, filtered }) => {
+export const Contacts = ({ persons, setPersons, filtered, setErrorMessage }) => {
   const deleteContact = (e, name) => {
     const conf = window.confirm(`Delete ${name}?`);
 
     if (conf) {
-      contactCrud.deleteContact(e.target.id).then(() => {
-        setPersons(persons.filter((person) => person.id != e.target.id));
-      });
+      contactCrud
+        .deleteContact(e.target.id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id != e.target.id));
+        })
+        .catch(() => {
+          setErrorMessage(`${name} has already been removed from server`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     }
   };
 

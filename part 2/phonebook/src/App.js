@@ -1,15 +1,18 @@
-import axios from "axios";
+import "./App.css";
 import { useEffect, useState } from "react";
 import { AddForm } from "./components/AddForm";
 import { Contacts } from "./components/Contacts";
 import { Filter } from "./components/Filter";
 import contactCrud from "./services/contactCrud";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filtered, setFiltred] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [alert, setAlert] = useState(null);
 
   useEffect(() => {
     contactCrud.getAll().then((res) => setPersons(res));
@@ -35,10 +38,18 @@ const App = () => {
       p.name = newName;
       contactCrud.update(p).then((res) => {
         setPersons(persons.map((person) => (person.id === p.id ? res : person)));
+        setAlert(`${newName} has been updated`);
+        setTimeout(() => {
+          setAlert(null);
+        }, 5000);
       });
     } else {
       contactCrud.create(personName).then((res) => {
         setPersons(persons.concat(res));
+        setAlert(`${newName} has been added`);
+        setTimeout(() => {
+          setAlert(null);
+        }, 5000);
       });
     }
     setNewName("");
@@ -48,6 +59,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} type="error" />
+      <Notification message={alert} type="success" />
       <Filter setFiltred={setFiltred} />
       <h1>Add New</h1>
       <AddForm
@@ -58,7 +71,7 @@ const App = () => {
         setNewNumber={setNewNumber}
       />
       <h2>Numbers</h2>
-      <Contacts setPersons={setPersons} persons={persons} filtered={filtered} />
+      <Contacts setErrorMessage={setErrorMessage} setPersons={setPersons} persons={persons} filtered={filtered} />
     </div>
   );
 };
