@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { AddForm } from "./components/AddForm";
 import { Contacts } from "./components/Contacts";
@@ -29,11 +30,19 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1,
     };
-    contactCrud.create(personName).then((res) => {
-      setPersons(persons.concat(res));
-      setNewName("");
-      setNewNumber("");
-    });
+    if (persons.some((person) => person.number == newNumber)) {
+      let p = persons.find((person) => person.number == newNumber);
+      p.name = newName;
+      contactCrud.update(p).then((res) => {
+        setPersons(persons.map((person) => (person.id === p.id ? res : person)));
+      });
+    } else {
+      contactCrud.create(personName).then((res) => {
+        setPersons(persons.concat(res));
+      });
+    }
+    setNewName("");
+    setNewNumber("");
   }
 
   return (

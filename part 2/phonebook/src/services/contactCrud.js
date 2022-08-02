@@ -12,9 +12,14 @@ const create = (contact) => {
 const deleteContact = (id) => {
   return axios.delete(`${baseUrl}/${id}`);
 };
+
+const update = (contact) => {
+  return axios.put(`${baseUrl}/${contact.id}`, contact).then((res) => res.data);
+};
 // eslint-disable-next-line
 export default {
   getAll,
   create,
   deleteContact,
+  update,
 };
