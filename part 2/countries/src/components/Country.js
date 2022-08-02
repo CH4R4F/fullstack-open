@@ -12,7 +12,6 @@ const Country = ({ country }) => {
       )
       .then((res) => setWeather(res.data));
   }, [country]);
-  console.log(weather);
   return (
     <div>
       <h1>{country.name.common}</h1>

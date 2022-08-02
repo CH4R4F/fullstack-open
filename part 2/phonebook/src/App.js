@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AddForm } from "./components/AddForm";
 import { Contacts } from "./components/Contacts";
 import { Filter } from "./components/Filter";
-import axios from "axios";
+import contactCrud from "./services/contactCrud";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,7 +11,7 @@ const App = () => {
   const [filtered, setFiltred] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((res) => setPersons(res.data));
+    contactCrud.getAll().then((res) => setPersons(res));
   }, []);
 
   function addPerson(e) {
@@ -29,9 +29,11 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1,
     };
-    setPersons(persons.concat(personName));
-    setNewName("");
-    setNewNumber("");
+    contactCrud.create(personName).then((res) => {
+      setPersons(persons.concat(res));
+      setNewName("");
+      setNewNumber("");
+    });
   }
 
   return (
