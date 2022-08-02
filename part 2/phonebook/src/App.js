@@ -49,7 +49,7 @@ const App = () => {
         setNewNumber={setNewNumber}
       />
       <h2>Numbers</h2>
-      <Contacts persons={persons} filtered={filtered} />
+      <Contacts setPersons={setPersons} persons={persons} filtered={filtered} />
     </div>
   );
 };

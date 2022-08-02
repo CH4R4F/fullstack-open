@@ -8,8 +8,13 @@ const getAll = () => {
 const create = (contact) => {
   return axios.post(baseUrl, contact).then((res) => res.data);
 };
+
+const deleteContact = (id) => {
+  return axios.delete(`${baseUrl}/${id}`);
+};
 // eslint-disable-next-line
 export default {
   getAll,
   create,
+  deleteContact,
 };
